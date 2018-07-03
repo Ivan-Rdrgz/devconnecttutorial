@@ -1,0 +1,27 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const auth = require("./routes/api/auth.js");
+const posts = require("./routes/api/posts.js");
+const profiles = require("./routes/api/profiles.js");
+
+const port = process.env.PORT || 5000;
+
+const app = express();
+
+//DB config
+const db = require("./config/keys").mongoURI;
+
+//Connect to MongoDB
+mongoose
+  .connect(db)
+  .then(() => console.log("connected to MongoDB!"))
+  .catch(err => console.log(err));
+
+//Use routes
+app.use("/api/auth", auth);
+app.use("/api/posts", posts);
+app.use("/api/profiles", profiles);
+
+app.get("/", (req, res) => res.send("Hello"));
+
+app.listen(port, () => console.log(`Listening on port ${port} ...`));
