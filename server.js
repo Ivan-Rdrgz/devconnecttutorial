@@ -1,12 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const auth = require("./routes/api/auth.js");
 const posts = require("./routes/api/posts.js");
 const profiles = require("./routes/api/profiles.js");
-
 const port = process.env.PORT || 5000;
-
 const app = express();
+
+//body-parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //DB config
 const db = require("./config/keys").mongoURI;
@@ -23,5 +26,4 @@ app.use("/api/posts", posts);
 app.use("/api/profiles", profiles);
 
 app.get("/", (req, res) => res.send("Hello"));
-
 app.listen(port, () => console.log(`Listening on port ${port} ...`));
